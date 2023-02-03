@@ -1,8 +1,10 @@
 - 👋 Hi, I’m Saikiran Reddy Lenkala @100193kiran
-- 👀 I’m a Computer Science Major with one year of experience in multiple large-scale projects using product designing, data processing, 
-and data visualization algorithms to solve challenging business problems. Involved in Java, Python open-source community and 
-passionate about deep reinforcement learning techniques. 
-Developing skills required to deliver business-scale engineering systems, namely Spark, MongoDB, Java, Python, Machine Learning.
-- 🌱 I’m Open to work as Data Analyst, Python Developer, Data Scientist, Business Analyst and Business Intelligence Analyst roles 
+- 👀 Computer Major with 4 years of experience in multiple large-scale projects using product designing, data processing, and data visualization algorithms to solve challenging business problems. Involved in Java, Python open-source community and passionate about deep reinforcement learning techniques. 
+
+Programming Languages: Java, Python, C, C++, JavaScript, Bash-scripting, SQL
+Web Technologies: HTML, React.JS, Node.JS, Rest API, Google cloud dataproc clusters, Observable 
+IT Infrastructure: MS SQL server, MongoDB, Spark, AWS (Redshift, EC2, S3), Excel
+Visualization and Modelling Tools: TABLEAU, Jupyter Notebook, SAS EM, GIT, Tableau Server, Google Analytics, Hypothesis Testing
+Machine Learning: Data wrangling, Regression, Exploratory Data Analysis, Descriptive statistics, Predictive Analytics, Tensorflow, Text Mining Algorithms, NLP, Sentiment Analysis 
 - 📫 How to reach me Gmail: saikiranreddy1001@gmail.com  linkedin: https://www.linkedin.com/in/saikiran-reddy-lenkala/
 
