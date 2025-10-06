@@ -201,5 +201,3 @@ git push -u dataset bot-combat-dataset-publish:main
 - Enrich schema (judges’ scorecards, damage/control/aggression breakdowns)
 - Add lightweight reranking and richer answer synthesis
 
-## License
-Choose a license appropriate for your use (e.g., MIT). If omitted, default usage rights may be unclear.
