@@ -1,9 +1,7 @@
 - 👋 Hi, I’m Saikiran Reddy Lenkala @100193kiran
-- 👀 Computer Major with experience in multiple large-scale projects using product designing, data processing, and data visualization algorithms to solve challenging business problems. Involved in Java, Python open-source community and passionate about deep reinforcement learning techniques. 
+- 👀 Data Engineer with over 6 years of experience with AWS, GCP and AI practitioner focused on building scalable data systems and exploring interpretability in large language models. With hands-on experience across AWS, Databricks, Spark, and real-time pipelines, I’ve led data infrastructure projects at Capital One, Comcast, and Wabtec.
 
-Programming Languages: Java, Python, C, C++, JavaScript, Bash-scripting, SQL
-Web Technologies: HTML, React.JS, Node.JS, Rest API, Google cloud dataproc clusters, Observable 
-IT Infrastructure: MS SQL server, MongoDB, Spark, AWS (Redshift, EC2, S3), Excel
-Visualization and Modelling Tools: TABLEAU, Jupyter Notebook, SAS EM, GIT, Tableau Server, Google Analytics, Hypothesis Testing
-Machine Learning: Data wrangling, Regression, Exploratory Data Analysis, Descriptive statistics, Predictive Analytics, Tensorflow, Text Mining Algorithms, NLP, Sentiment Analysis
+My research centers on the CETL (Cognitive-Emotional Thought Lifecycle) framework an approach that uses Small Language Models (SLMs) to modularize reasoning in LLMs through thought generation, emotional weighting, and validation layers. This aligns with aiming to improve model transparency and controllability.
+
+I’m passionate about bridging high-performance systems with transparent and trustworthy AI.
 
