@@ -16,6 +16,8 @@ class Bot:
     primary_weapon: Optional[str] = None
     drive_type: Optional[str] = None
     active_years: Optional[str] = None
+    # Optional free-text notes captured by some scrapers (e.g., Robot Wars tables)
+    notes: Optional[str] = None
 
     def to_record(self) -> Dict[str, Any]:
         return asdict(self)
