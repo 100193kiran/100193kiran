@@ -13,6 +13,7 @@ from .schemas import Bot, Fight, Event
 from .normalization import build_dataframes, export_to_excel, export_to_parquet
 from .io_utils import write_jsonl, read_jsonl, ensure_parent_dir
 from .scrapers.fandom import parse_battlebots_season_page
+from .scrapers.robotwars import scrape_robotwars_page
 from .chat.agent import RetrievalQABot
 
 logging.basicConfig(level=logging.INFO)
@@ -25,7 +26,7 @@ def main() -> None:
 
 
 @main.command()
-@click.option("--source", type=click.Choice(["fandom-battlebots"]), default="fandom-battlebots")
+@click.option("--source", type=click.Choice(["fandom-battlebots", "fandom-robotwars"]), default="fandom-battlebots")
 @click.option("--url", multiple=True, help="Season or event page URLs to scrape")
 @click.option("--outdir", default="data/raw", help="Output directory for JSONL files")
 def scrape(source: str, url: List[str], outdir: str) -> None:
@@ -46,6 +47,20 @@ def scrape(source: str, url: List[str], outdir: str) -> None:
             all_bots.extend(bots)
             all_fights.extend(fights)
             all_events.extend(events)
+    elif source == "fandom-robotwars":
+        if not url:
+            logger.error("Please provide at least one --url for fandom-robotwars")
+            sys.exit(2)
+        for u in url:
+            logger.info("Scraping Robot Wars page: %s", u)
+            # Robot Wars scraper writes JSONL directly; also collect in-memory for build
+            summary = scrape_robotwars_page(u, outdir)
+            logger.info("Robot Wars write summary: %s", summary)
+            # read back to in-memory maps for unified dedupe/export in this run
+            # Not strictly necessary since JSONL already written, but keeps behavior consistent
+            # with the BattleBots path if the user chains scrape->build in one process.
+            # We'll just skip in-memory accumulation here to avoid double-counting.
+            pass
 
     # Deduplicate by IDs
     bot_map = {b.bot_id: b for b in all_bots if b.bot_id}

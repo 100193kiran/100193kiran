@@ -26,7 +26,8 @@ bot-combat-dataset/
     io_utils.py              # JSONL IO + safe directory creation
     scrapers/
       __init__.py
-      fandom.py              # MVP scraper for BattleBots Fandom season pages
+      fandom.py              # MVP scraper: BattleBots Fandom season pages
+      robotwars.py           # MVP scraper: Robot Wars Fandom pages
     chat/
       agent.py               # TF-IDF retrieval QA agent over the tables
   data/
@@ -132,9 +133,10 @@ python -m bot_combat_dataset.cli chat --demo -q "Who defeated Tombstone in the d
 ```
 
 ## Scrape real data
-MVP support is for BattleBots Fandom season pages. Page slugs may change over time—verify the exact URL. Examples to try:
+MVP support is for BattleBots and Robot Wars Fandom pages. Page slugs may change over time—verify the exact URL. Examples to try:
 - `https://battlebots.fandom.com/wiki/BattleBots_2018_Season`
 - `https://battlebots.fandom.com/wiki/BattleBots_2019_Season`
+- `https://robotwars.fandom.com/wiki/Robot_Wars_(series)` (use a concrete season/subpage)
 
 Run the scraper (one or more `--url`):
 ```bash
@@ -142,6 +144,12 @@ python -m bot_combat_dataset.cli scrape \
   --source fandom-battlebots \
   --url "https://battlebots.fandom.com/wiki/BattleBots_2018_Season" \
   --url "https://battlebots.fandom.com/wiki/BattleBots_2019_Season" \
+  --outdir data/raw
+
+# Robot Wars example
+python -m bot_combat_dataset.cli scrape \
+  --source fandom-robotwars \
+  --url "https://robotwars.fandom.com/wiki/Series_7" \
   --outdir data/raw
 ```
 This writes JSONL files to `data/raw/`:

@@ -13,3 +13,8 @@ keywords = ["battlebots", "robot wars", "dataset", "scraping", "excel", "parquet
 
 [project.scripts]
 bot-combat = "bot_combat_dataset.cli:main"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-q"
+testpaths = ["tests"]

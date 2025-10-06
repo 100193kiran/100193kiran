@@ -35,6 +35,7 @@ def build_dataframes(
             "active_years",
             "aliases",
             "wiki_url",
+            "notes",
         ]
         df_bots = df_bots.reindex(columns=bot_cols)
 

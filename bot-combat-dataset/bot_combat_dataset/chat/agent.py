@@ -61,6 +61,7 @@ class RetrievalQABot:
                         row.get("drive_type"),
                         row.get("country"),
                         row.get("active_years"),
+                        row.get("notes"),
                         ",".join(row.get("aliases") or []) if isinstance(row.get("aliases"), list) else None,
                     ],
                 )
