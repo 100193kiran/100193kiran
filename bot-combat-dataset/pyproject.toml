@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bot-combat-dataset"
+version = "0.1.0"
+description = "Dataset and scrapers for bots-vs-bots fight data with CLI and chat agent."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Your Name" }]
+keywords = ["battlebots", "robot wars", "dataset", "scraping", "excel", "parquet", "chatbot", "SLM"]
+
+[project.scripts]
+bot-combat = "bot_combat_dataset.cli:main"
