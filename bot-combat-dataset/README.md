@@ -177,7 +177,26 @@ One-shot question:
 ```bash
 python -m bot_combat_dataset.cli chat --data data/bot_combat_dataset.xlsx -q "Show finals winners for the 2018 season"
 ```
-How it works: a compact TF‑IDF retriever indexes rows from `fights` and `bots`. At query time, the top‑k rows are retrieved and a small template synthesizes an answer. No remote calls, no GPU, no LLM APIs.
+How it works (SLM-style):
+- Default retriever is TF‑IDF; you can switch to BM25 for better sparse matching.
+- Answer synthesis is template-based by default; optionally enable a tiny `t5-small` generator if you have internet and want slightly more fluent answers.
+
+To use BM25 and/or T5 generation in code:
+```python
+from bot_combat_dataset.chat.agent import RetrievalQABot, RetrievalQAConfig
+# tables = build_dataframes(...)
+cfg = RetrievalQAConfig(retriever="bm25", generator="template")
+agent = RetrievalQABot(tables, cfg)
+print(agent.answer("Who defeated Tombstone? ")['answer'])
+```
+
+If you want T5 generation:
+```python
+from bot_combat_dataset.chat.agent import RetrievalQABot, RetrievalQAConfig
+cfg = RetrievalQAConfig(retriever="bm25", generator="t5", t5_model_name="t5-small")
+agent = RetrievalQABot(tables, cfg)
+print(agent.answer("Summarize the finals result.")["answer"])
+```
 
 ## Notes on scraping ethically
 - Check and respect each site’s Terms of Use and robots.txt
@@ -189,6 +208,28 @@ How it works: a compact TF‑IDF retriever indexes rows from `fights` and `bots`
 - Python 3.13 builds: If `pandas` or other packages attempt to build from source and fail, use Python 3.11/3.12.
 - PATH warnings after user‑site install: add `~/.local/bin` to your PATH.
 - Fandom page not found (404): season page slugs can change; search the wiki and update the URL accordingly.
+
+## Testing
+Install test deps (already in `requirements.txt`) and run:
+```bash
+cd bot-combat-dataset
+./scripts/setup_venv.sh
+source .venv/bin/activate  # if created
+pytest
+```
+
+Run a single file or test for quick feedback:
+```bash
+pytest tests/test_robotwars_scraper.py::test_parse_fights_section_mixed_headers -q
+pytest tests/test_chat_agent.py -q
+pytest tests/test_chat_agent_bm25.py -q
+```
+
+Smoke-test the CLI end-to-end (demo):
+```bash
+python -m bot_combat_dataset.cli build --demo --excel data/bot_combat_dataset.xlsx --parquet data/processed
+python -m bot_combat_dataset.cli chat --data data/bot_combat_dataset.xlsx -q "Who won the finals?"
+```
 
 ## Publishing as a standalone GitHub repo (optional)
 If this project lives within a monorepo and you want to publish just `bot-combat-dataset/` as its own repository, you can use a subtree split:

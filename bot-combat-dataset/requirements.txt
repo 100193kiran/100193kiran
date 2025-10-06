@@ -10,3 +10,6 @@ scikit-learn==1.5.2
 tqdm==4.66.5
 tenacity==8.5.0
 pytest==8.3.3
+rank-bm25==0.2.2
+transformers==4.44.2
+torch>=2.0.0; platform_system != 'Windows'
