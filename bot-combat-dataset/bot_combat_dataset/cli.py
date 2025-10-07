@@ -26,8 +26,8 @@ def main() -> None:
 
 
 @main.command()
-@click.option("--source", type=click.Choice(["fandom-battlebots", "fandom-robotwars"]), default="fandom-battlebots")
-@click.option("--url", multiple=True, help="Season or event page URLs to scrape")
+@click.option("--source", type=click.Choice(["fandom-robotwars", "fandom-battlebots"]), default="fandom-robotwars")
+@click.option("--url", multiple=True, help="Season or event page URLs to scrape (defaults to The Seventh Wars)")
 @click.option("--outdir", default="data/raw", help="Output directory for JSONL files")
 def scrape(source: str, url: List[str], outdir: str) -> None:
     """Scrape raw data from online sources into JSONL files."""
@@ -49,8 +49,7 @@ def scrape(source: str, url: List[str], outdir: str) -> None:
             all_events.extend(events)
     elif source == "fandom-robotwars":
         if not url:
-            logger.error("Please provide at least one --url for fandom-robotwars")
-            sys.exit(2)
+            url = ("https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars",)
         for u in url:
             logger.info("Scraping Robot Wars page: %s", u)
             # Robot Wars scraper writes JSONL directly; also collect in-memory for build
@@ -136,53 +135,53 @@ def chat(data_path: str, demo: bool, question: Optional[str]) -> None:
 
 
 def _demo_records():
-    # Minimal high-signal demo enabling quickstart
+    # Minimal demo pivoted to Robot Wars: The Seventh Wars
     bots = [
-        Bot(bot_id="tombstone", name="Tombstone", primary_weapon="Spinning bar"),
-        Bot(bot_id="bite-force", name="Bite Force", primary_weapon="Vertical spinner"),
-        Bot(bot_id="whiplash", name="Whiplash", primary_weapon="Lifter/Spinner"),
+        Bot(bot_id="razer", name="Razer", primary_weapon="Crusher"),
+        Bot(bot_id="hypno-disc", name="Hypno-Disc", primary_weapon="Spinner"),
+        Bot(bot_id="chaos-2", name="Chaos 2", primary_weapon="Flipper"),
     ]
 
     events = [
-        Event(event_id="battlebots-2018", name="BattleBots 2018", series="BattleBots", season="2018"),
+        Event(event_id="robot-wars-seventh-wars", name="Robot Wars: The Seventh Wars", series="Robot Wars", season="Series 7"),
     ]
 
     fights = [
         Fight(
-            fight_id="2018-finals-tombstone-biteforce",
-            event_id="battlebots-2018",
-            series="BattleBots",
-            season="2018",
-            round_name="Finals",
-            blue_bot_id="tombstone",
-            red_bot_id="bite-force",
-            blue_bot_name="Tombstone",
-            red_bot_name="Bite Force",
-            winner_bot_id="bite-force",
-            winner_bot_name="Bite Force",
+            fight_id="series7-heat-a-razer-hypno-disc",
+            event_id="robot-wars-seventh-wars",
+            series="Robot Wars",
+            season="Series 7",
+            round_name="Heat A",
+            blue_bot_id="razer",
+            red_bot_id="hypno-disc",
+            blue_bot_name="Razer",
+            red_bot_name="Hypno-Disc",
+            winner_bot_id="razer",
+            winner_bot_name="Razer",
             method="KO",
-            duration="1:59",
+            duration="1:10",
             referee_decision=False,
-            notes="Bite Force outdrives Tombstone and lands decisive hits.",
-            source_url=None,
+            notes="Razer disables Hypno-Disc",
+            source_url="https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars",
         ),
         Fight(
-            fight_id="2018-quarterfinals-biteforce-whiplash",
-            event_id="battlebots-2018",
-            series="BattleBots",
-            season="2018",
-            round_name="Quarterfinals",
-            blue_bot_id="bite-force",
-            red_bot_id="whiplash",
-            blue_bot_name="Bite Force",
-            red_bot_name="Whiplash",
-            winner_bot_id="bite-force",
-            winner_bot_name="Bite Force",
+            fight_id="series7-semi-chaos2-razer",
+            event_id="robot-wars-seventh-wars",
+            series="Robot Wars",
+            season="Series 7",
+            round_name="Semi-Final",
+            blue_bot_id="chaos-2",
+            red_bot_id="razer",
+            blue_bot_name="Chaos 2",
+            red_bot_name="Razer",
+            winner_bot_id="chaos-2",
+            winner_bot_name="Chaos 2",
             method="UD",
             duration="3:00",
             referee_decision=True,
-            notes="Judges' unanimous decision.",
-            source_url=None,
+            notes="Judges' decision",
+            source_url="https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars",
         ),
     ]
 

@@ -24,7 +24,7 @@ def test_extract_event_metadata_from_infobox():
     </body></html>
     """
     soup = soup_from_html(html)
-    meta = extract_event_metadata(soup, "http://example.com")
+    meta = extract_event_metadata(soup, "https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars")
     assert meta["series"] == "Robot Wars"
     assert meta["name"].startswith("Robot Wars")
     assert meta["location"] == "Sheffield, UK"
@@ -45,7 +45,7 @@ def test_parse_bots_section_from_table():
     </body></html>
     """
     soup = soup_from_html(html)
-    bots = parse_bots_section(soup, "http://example.com")
+    bots = parse_bots_section(soup, "https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars")
     assert len(bots) == 2
     names = {b["name"] for b in bots}
     assert {"Razer", "Hypno-Disc"}.issubset(names)
@@ -69,7 +69,7 @@ def test_parse_fights_section_mixed_headers():
         "series": "Robot Wars",
         "season": "Series 7",
     }
-    fights = parse_fights_section(soup, event_meta, "http://example.com")
+    fights = parse_fights_section(soup, event_meta, "https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars")
     assert len(fights) == 2
     winners = {f["winner_bot_name"] for f in fights}
     assert {"Razer", "Chaos 2"}.issubset(winners)

@@ -56,6 +56,9 @@ class Fight:
     referee_decision: Optional[bool]
     notes: Optional[str]
     source_url: Optional[str]
+    # Additional Robot Wars-specific annotations
+    heat: Optional[str] = None
+    episode: Optional[str] = None
 
     def to_record(self) -> Dict[str, Any]:
         return asdict(self)

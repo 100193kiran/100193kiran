@@ -4,17 +4,12 @@ from bot_combat_dataset.schemas import Bot, Fight, Event
 
 
 def test_retrieval_agent_answers_from_fight_context():
-    bots = [
-        Bot(bot_id="razer", name="Razer"),
-        Bot(bot_id="hypno-disc", name="Hypno-Disc"),
-    ]
-    events = [
-        Event(event_id="rw-7", name="Robot Wars Series 7", series="Robot Wars", season="Series 7"),
-    ]
+    bots = [Bot(bot_id="razer", name="Razer"), Bot(bot_id="hypno-disc", name="Hypno-Disc")]
+    events = [Event(event_id="robot-wars-seventh-wars", name="Robot Wars: The Seventh Wars", series="Robot Wars", season="Series 7")]
     fights = [
         Fight(
             fight_id="heat-a-razer-hypno",
-            event_id="rw-7",
+            event_id="robot-wars-seventh-wars",
             series="Robot Wars",
             season="Series 7",
             round_name="Heat A",

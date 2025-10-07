@@ -8,13 +8,11 @@ def test_bm25_retrieval_finds_correct_fight():
         Bot(bot_id="razer", name="Razer"),
         Bot(bot_id="chaos-2", name="Chaos 2"),
     ]
-    events = [
-        Event(event_id="rw-7", name="Robot Wars Series 7", series="Robot Wars", season="Series 7"),
-    ]
+    events = [Event(event_id="robot-wars-seventh-wars", name="Robot Wars: The Seventh Wars", series="Robot Wars", season="Series 7")]
     fights = [
         Fight(
             fight_id="semi-razer-chaos2",
-            event_id="rw-7",
+            event_id="robot-wars-seventh-wars",
             series="Robot Wars",
             season="Series 7",
             round_name="Semi",

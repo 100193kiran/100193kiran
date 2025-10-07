@@ -1,6 +1,6 @@
 # Bot Combat Dataset
 
-Dataset, scrapers, and a lightweight retrieval chat agent for bots-vs-bots combat data (e.g., BattleBots). This project helps you scrape public web pages, normalize the data into Pandas DataFrames, export to Excel/Parquet, and ask natural-language questions against the results using a small, local TF‑IDF retriever (no external LLMs required).
+Dataset, scrapers, and a lightweight retrieval chat agent for Robot Wars data. This project helps you scrape public web pages, normalize the data into Pandas DataFrames, export to Excel/Parquet, and ask natural-language questions against the results using a small, local TF‑IDF/BM25 retriever (no external LLMs required).
 
 ## What you get
 - End-to-end pipeline: scrape ➜ normalize ➜ export (Excel, Parquet) ➜ chat
@@ -26,8 +26,8 @@ bot-combat-dataset/
     io_utils.py              # JSONL IO + safe directory creation
     scrapers/
       __init__.py
-      fandom.py              # MVP scraper: BattleBots Fandom season pages
-      robotwars.py           # MVP scraper: Robot Wars Fandom pages
+      fandom.py              # BattleBots (legacy, optional)
+      robotwars.py           # Robot Wars scraper (primary)
     chat/
       agent.py               # TF-IDF retrieval QA agent over the tables
   data/
@@ -133,23 +133,14 @@ python -m bot_combat_dataset.cli chat --demo -q "Who defeated Tombstone in the d
 ```
 
 ## Scrape real data
-MVP support is for BattleBots and Robot Wars Fandom pages. Page slugs may change over time—verify the exact URL. Examples to try:
-- `https://battlebots.fandom.com/wiki/BattleBots_2018_Season`
-- `https://battlebots.fandom.com/wiki/BattleBots_2019_Season`
-- `https://robotwars.fandom.com/wiki/Robot_Wars_(series)` (use a concrete season/subpage)
+Primary target: Robot Wars: The Seventh Wars.
+Default URL when none is provided: `https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars`.
 
 Run the scraper (one or more `--url`):
 ```bash
 python -m bot_combat_dataset.cli scrape \
-  --source fandom-battlebots \
-  --url "https://battlebots.fandom.com/wiki/BattleBots_2018_Season" \
-  --url "https://battlebots.fandom.com/wiki/BattleBots_2019_Season" \
-  --outdir data/raw
-
-# Robot Wars example
-python -m bot_combat_dataset.cli scrape \
   --source fandom-robotwars \
-  --url "https://robotwars.fandom.com/wiki/Series_7" \
+  --url "https://robotwars.fandom.com/wiki/Robot_Wars:_The_Seventh_Wars" \
   --outdir data/raw
 ```
 This writes JSONL files to `data/raw/`:
@@ -175,7 +166,7 @@ python -m bot_combat_dataset.cli chat --data data/bot_combat_dataset.xlsx
 ```
 One-shot question:
 ```bash
-python -m bot_combat_dataset.cli chat --data data/bot_combat_dataset.xlsx -q "Show finals winners for the 2018 season"
+python -m bot_combat_dataset.cli chat --data data/bot_combat_dataset.xlsx -q "Who won the Semi-Final between Chaos 2 and Razer?"
 ```
 How it works (SLM-style):
 - Default retriever is TF‑IDF; you can switch to BM25 for better sparse matching.
@@ -187,7 +178,7 @@ from bot_combat_dataset.chat.agent import RetrievalQABot, RetrievalQAConfig
 # tables = build_dataframes(...)
 cfg = RetrievalQAConfig(retriever="bm25", generator="template")
 agent = RetrievalQABot(tables, cfg)
-print(agent.answer("Who defeated Tombstone? ")['answer'])
+print(agent.answer("Who won Heat A in The Seventh Wars?")['answer'])
 ```
 
 If you want T5 generation:
@@ -195,7 +186,7 @@ If you want T5 generation:
 from bot_combat_dataset.chat.agent import RetrievalQABot, RetrievalQAConfig
 cfg = RetrievalQAConfig(retriever="bm25", generator="t5", t5_model_name="t5-small")
 agent = RetrievalQABot(tables, cfg)
-print(agent.answer("Summarize the finals result.")["answer"])
+print(agent.answer("Summarize the Semi-Final outcome in The Seventh Wars.")["answer"])
 ```
 
 ## Notes on scraping ethically

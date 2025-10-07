@@ -46,6 +46,8 @@ def build_dataframes(
             "series",
             "season",
             "round_name",
+            "heat",
+            "episode",
             "blue_bot_id",
             "red_bot_id",
             "blue_bot_name",
