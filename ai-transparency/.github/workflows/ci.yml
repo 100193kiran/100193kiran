@@ -33,3 +33,30 @@ jobs:
         run: |
           pip install jsonschema
           pytest tests/contract/test_benchmark_schema.py
+
+
+  visual-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install UI deps
+        run: |
+          cd packages/ui
+          npm ci
+      - name: Install Playwright browsers
+        run: |
+          cd packages/ui
+          npx playwright install --with-deps chromium
+      - name: Build Storybook
+        run: |
+          cd packages/ui
+          npm run build-storybook
+      - name: Run visual regression
+        run: |
+          cd packages/ui
+          npx http-server storybook-static -p 6006 &
+          sleep 5
+          npm run test:visual

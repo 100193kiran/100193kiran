@@ -486,3 +486,32 @@ This blueprint includes:
 - target architecture,
 - phased implementation (PR A/PR B/PR C),
 - and a Codex-ready execution prompt.
+
+
+---
+
+## 12) Storybook + visual regression
+
+A new shared UI package is available at `packages/ui` with Storybook stories and Playwright visual snapshots.
+
+### Local usage
+
+```bash
+cd packages/ui
+npm ci
+npm run storybook
+```
+
+Open:
+- `http://localhost:6006/?path=/story/design-system-button--primary`
+
+### Visual snapshot test
+
+```bash
+cd packages/ui
+npm run build-storybook
+npx http-server storybook-static -p 6006 &
+npm run test:visual
+```
+
+CI now includes a `visual-regression` job that builds Storybook and runs Playwright screenshot diffs.
