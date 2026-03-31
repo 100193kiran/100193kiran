@@ -471,3 +471,18 @@ docker compose down --remove-orphans
 # 29) Optional: remove volumes (full reset)
 docker compose down -v
 ```
+
+
+---
+
+## 11) 2026 modernization blueprint (staff-level)
+
+If you want to execute a drastic modernization in structured phases, use:
+
+- `docs/modernization-mega-pr-spec.md`
+
+This blueprint includes:
+- target outcomes,
+- target architecture,
+- phased implementation (PR A/PR B/PR C),
+- and a Codex-ready execution prompt.
