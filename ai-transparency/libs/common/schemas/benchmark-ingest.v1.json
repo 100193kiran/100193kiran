@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "com.ai_transparency.benchmark_ingest.v1",
+  "title": "BenchmarkIngestEventV1",
+  "type": "object",
+  "required": ["schema_version", "model_id", "benchmark_name", "metrics"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "model_id": { "type": "string" },
+    "benchmark_name": { "type": "string" },
+    "metrics": { "type": "object" },
+    "auditor_signature": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

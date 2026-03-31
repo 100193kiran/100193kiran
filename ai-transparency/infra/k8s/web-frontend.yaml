@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: web-frontend }
+  template:
+    metadata:
+      labels: { app: web-frontend }
+    spec:
+      containers:
+        - name: web-frontend
+          image: your-registry/web-frontend:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef: { name: ai-transparency-config }
+            - secretRef: { name: ai-transparency-secret }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-frontend
+spec:
+  selector: { app: web-frontend }
+  ports:
+    - port: 3000
+      targetPort: 3000

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <rect width="1200" height="760" fill="#0b1020"/>
+  <text x="30" y="40" fill="#fff" font-size="28" font-family="Arial">AI Transparency Platform - System Architecture</text>
+  <rect x="40" y="80" width="230" height="80" fill="#1f6feb" rx="10"/><text x="60" y="125" fill="#fff" font-size="20">Web Frontend</text>
+  <rect x="320" y="80" width="230" height="80" fill="#238636" rx="10"/><text x="340" y="125" fill="#fff" font-size="20">API Gateway</text>
+  <rect x="600" y="60" width="180" height="70" fill="#7c3aed" rx="10"/><text x="620" y="103" fill="#fff" font-size="18">Profiles</text>
+  <rect x="600" y="150" width="180" height="70" fill="#7c3aed" rx="10"/><text x="625" y="193" fill="#fff" font-size="18">Reviews</text>
+  <rect x="820" y="60" width="180" height="70" fill="#7c3aed" rx="10"/><text x="835" y="103" fill="#fff" font-size="18">Benchmarks</text>
+  <rect x="820" y="150" width="180" height="70" fill="#7c3aed" rx="10"/><text x="840" y="193" fill="#fff" font-size="18">Analytics</text>
+  <rect x="820" y="240" width="180" height="70" fill="#7c3aed" rx="10"/><text x="830" y="283" fill="#fff" font-size="18">Ingest Worker</text>
+  <rect x="380" y="340" width="180" height="70" fill="#d29922" rx="10"/><text x="420" y="383" fill="#111" font-size="18">Postgres</text>
+  <rect x="600" y="340" width="180" height="70" fill="#d29922" rx="10"/><text x="655" y="383" fill="#111" font-size="18">Redis</text>
+  <rect x="820" y="340" width="180" height="70" fill="#d29922" rx="10"/><text x="885" y="383" fill="#111" font-size="18">Kafka</text>
+  <line x1="270" y1="120" x2="320" y2="120" stroke="#fff" stroke-width="3"/>
+  <line x1="550" y1="120" x2="600" y2="95" stroke="#fff" stroke-width="3"/>
+  <line x1="550" y1="120" x2="600" y2="185" stroke="#fff" stroke-width="3"/>
+  <line x1="550" y1="120" x2="820" y2="95" stroke="#fff" stroke-width="3"/>
+  <line x1="900" y1="130" x2="900" y2="240" stroke="#fff" stroke-width="3"/>
+  <line x1="900" y1="310" x2="900" y2="340" stroke="#fff" stroke-width="3"/>
+  <line x1="690" y1="130" x2="470" y2="340" stroke="#fff" stroke-width="3"/>
+  <line x1="690" y1="220" x2="470" y2="340" stroke="#fff" stroke-width="3"/>
+  <line x1="690" y1="220" x2="690" y2="340" stroke="#fff" stroke-width="3"/>
+</svg>
