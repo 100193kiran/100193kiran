@@ -254,3 +254,57 @@ This introduces governance guardrails similar to enterprise model onboarding wor
 - Added model-card endpoints and compliance evidence endpoints in profiles.
 - Added SQL migration for `model_cards` and `compliance_evidence`.
 - Audit logs now chain payload metadata with previous hash context for stronger tamper evidence.
+
+
+---
+
+## 9) Architectural, technology, codebase, and webpage overview (requested)
+
+### Architectural overview
+
+Detailed architecture write-up: `docs/architecture-overview.md`.
+
+#### Diagram
+
+![System Architecture](docs/diagrams/architecture.svg)
+
+```mermaid
+flowchart LR
+  UI[Web Frontend] --> GW[API Gateway]
+  GW --> P[Profiles]
+  GW --> R[Reviews]
+  GW --> B[Benchmarks]
+  GW --> A[Analytics]
+  B --> K[(Kafka)]
+  K --> W[Ingest Worker]
+  W --> P
+  P --> PG[(Postgres)]
+  R --> PG
+  P --> REDIS[(Redis)]
+```
+
+### Tech stack overview
+
+See `docs/tech-stack-overview.md` for a concise layer-by-layer stack map.
+
+### Code overview
+
+See `docs/code-overview.md` for subsystem responsibilities and folder-by-folder ownership.
+
+### Final product webpage + HTML/CSS overview
+
+- UI overview and structure: `docs/web-ui-overview.md`
+- Wireframe picture:
+
+![Webpage Wireframe](docs/diagrams/webpage-wireframe.svg)
+
+- HTML/CSS implementation references:
+  - Home page: `apps/web-frontend/pages/index.tsx`
+  - Model page: `apps/web-frontend/pages/models/[id].tsx`
+  - API proxy: `apps/web-frontend/pages/api/proxy/[...path].ts`
+
+### Diagram and pictures included
+
+- Architecture picture: `docs/diagrams/architecture.svg`
+- Webpage wireframe picture: `docs/diagrams/webpage-wireframe.svg`
+- Mermaid architecture diagram in this README section.
