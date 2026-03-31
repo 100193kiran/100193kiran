@@ -308,3 +308,166 @@ See `docs/code-overview.md` for subsystem responsibilities and folder-by-folder 
 - Architecture picture: `docs/diagrams/architecture.svg`
 - Webpage wireframe picture: `docs/diagrams/webpage-wireframe.svg`
 - Mermaid architecture diagram in this README section.
+
+
+---
+
+## 10) Implementation and full setup/run guide (line-by-line commands)
+
+> Copy/paste these commands exactly, in order.
+
+### A. Prerequisites
+
+```bash
+# 1) Check tools
+python --version
+node --version
+npm --version
+docker --version
+docker compose version
+```
+
+### B. Clone and enter project
+
+```bash
+# 2) Clone
+git clone <YOUR_REPO_URL> ai-transparency
+cd ai-transparency
+
+# 3) Verify key files exist
+ls -la
+ls -la services apps infra tests docs
+```
+
+### C. Environment setup
+
+```bash
+# 4) Create .env from example
+cp .env.example .env
+
+# 5) (Optional) edit token/ports if needed
+cat .env
+```
+
+### D. Build and start infrastructure + services
+
+```bash
+# 6) Build and run everything in background
+docker compose up -d --build
+
+# 7) Check container states
+docker compose ps
+
+# 8) Stream logs while services warm up
+docker compose logs -f --tail=200
+```
+
+### E. Health checks (all services)
+
+```bash
+# 9) Profiles
+curl -s http://localhost:4000/health
+
+# 10) Reviews
+curl -s http://localhost:4100/health
+
+# 11) Benchmarks
+curl -s http://localhost:5000/health
+
+# 12) Analytics
+curl -s http://localhost:6000/health
+
+# 13) API gateway
+curl -s -H "Authorization: Bearer dev-token" http://localhost:8080/health
+```
+
+### F. Seed demo data and smoke test
+
+```bash
+# 14) Run seed script (creates model + benchmark + review + workflow submit)
+make seed
+
+# 15) Run smoke checks (model read + trust score + workflow check)
+make smoke
+```
+
+### G. Manual API flow (end-to-end)
+
+```bash
+# 16) Create a model (save returned id)
+curl -s -X POST http://localhost:4000/models   -H 'Content-Type: application/json'   -H 'Authorization: Bearer dev-token'   -H 'x-user-role: publisher'   -d '{
+    "name":"ManualModel",
+    "version":"1.0.0",
+    "architecture":"transformer",
+    "training_data":{
+      "sources":["dataset-a"],
+      "collection_method":"curated",
+      "licenses":["cc-by-4.0"],
+      "provenance_score":0.82
+    }
+  }'
+
+# 17) Ingest benchmark (replace MODEL_ID)
+curl -s -X POST http://localhost:5000/ingest   -H 'Content-Type: application/json'   -H 'Authorization: Bearer dev-token'   -d '{
+    "model_id":"MODEL_ID",
+    "benchmark_name":"truthfulqa",
+    "metrics":{"score":0.74},
+    "auditor_signature":"sig"
+  }'
+
+# 18) Add review (replace MODEL_ID)
+curl -s -X POST http://localhost:4100/models/MODEL_ID/reviews   -H 'Content-Type: application/json'   -H 'Authorization: Bearer dev-token'   -d '{"author":"auditor-1","rating":4,"text":"good","tags":["governance"]}'
+
+# 19) Submit workflow (replace MODEL_ID)
+curl -s -X POST http://localhost:4000/models/MODEL_ID/workflow/submit   -H 'Content-Type: application/json'   -H 'Authorization: Bearer dev-token'   -H 'x-user-role: publisher'   -d '{"note":"submit for audit"}'
+
+# 20) Approve workflow (replace MODEL_ID)
+curl -s -X POST http://localhost:4000/models/MODEL_ID/workflow/approve   -H 'Content-Type: application/json'   -H 'Authorization: Bearer dev-token'   -H 'x-user-role: auditor'   -d '{"decision":"approve","note":"approved by audit"}'
+
+# 21) Fetch full model aggregate (replace MODEL_ID)
+curl -s http://localhost:4000/models/MODEL_ID
+```
+
+### H. Run tests locally
+
+```bash
+# 22) Full local tests
+make test
+
+# 23) Node tests only
+cd services/profiles && npm test
+cd ../reviews && npm test
+
+# 24) Python tests only
+cd ../../
+pytest services/benchmarks/test_main.py services/analytics/test_analytics_main.py tests/contract/test_benchmark_schema.py
+```
+
+### I. Kubernetes apply (if kubectl cluster is configured)
+
+```bash
+# 25) Apply config/secret first
+kubectl apply -f infra/k8s/configmap.yaml
+kubectl apply -f infra/k8s/secret.yaml
+
+# 26) Apply services/deployments
+kubectl apply -f infra/k8s/profiles.yaml
+kubectl apply -f infra/k8s/reviews.yaml
+kubectl apply -f infra/k8s/benchmarks.yaml
+kubectl apply -f infra/k8s/analytics.yaml
+kubectl apply -f infra/k8s/api-gateway.yaml
+kubectl apply -f infra/k8s/web-frontend.yaml
+
+# 27) Apply ingress
+kubectl apply -f infra/k8s/ingress.yaml
+```
+
+### J. Shutdown and cleanup
+
+```bash
+# 28) Stop services
+docker compose down --remove-orphans
+
+# 29) Optional: remove volumes (full reset)
+docker compose down -v
+```
