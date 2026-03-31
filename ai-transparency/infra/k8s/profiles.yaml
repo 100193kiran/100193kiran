@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profiles
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: profiles }
+  template:
+    metadata:
+      labels: { app: profiles }
+    spec:
+      containers:
+        - name: profiles
+          image: your-registry/profiles:latest
+          ports:
+            - containerPort: 4000
+5000
+4100
+6000
+          envFrom:
+            - configMapRef: { name: ai-transparency-config }
+            - secretRef: { name: ai-transparency-secret }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: profiles
+spec:
+  selector: { app: profiles }
+  ports:
+    - port: 4000
+5000
+4100
+6000
+      targetPort: 4000
+5000
+4100
+6000
