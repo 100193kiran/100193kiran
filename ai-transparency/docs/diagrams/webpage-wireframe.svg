@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#f5f7fb"/>
+  <rect x="40" y="30" width="920" height="50" fill="#1f2937" rx="8"/>
+  <text x="60" y="62" fill="#fff" font-size="22" font-family="Arial">AI Transparency Platform</text>
+  <rect x="40" y="100" width="920" height="120" fill="#fff" stroke="#d1d5db" rx="8"/>
+  <text x="60" y="135" fill="#111827" font-size="20">Search model by ID</text>
+  <rect x="60" y="150" width="600" height="40" fill="#f9fafb" stroke="#9ca3af" rx="6"/>
+  <rect x="680" y="150" width="140" height="40" fill="#2563eb" rx="6"/>
+  <text x="730" y="176" fill="#fff" font-size="16" text-anchor="middle">Search</text>
+  <rect x="40" y="240" width="920" height="340" fill="#fff" stroke="#d1d5db" rx="8"/>
+  <text x="60" y="275" fill="#111827" font-size="22">Model Profile Page</text>
+  <text x="60" y="310" fill="#374151" font-size="16">Trust score</text>
+  <rect x="60" y="320" width="220" height="45" fill="#ecfeff" stroke="#06b6d4" rx="6"/>
+  <text x="75" y="350" fill="#0f172a" font-size="18">Trust: 12.78</text>
+  <text x="320" y="310" fill="#374151" font-size="16">Benchmark summary</text>
+  <rect x="320" y="320" width="620" height="120" fill="#f9fafb" stroke="#9ca3af" rx="6"/>
+  <text x="60" y="470" fill="#374151" font-size="16">Review form</text>
+  <rect x="60" y="480" width="280" height="38" fill="#f9fafb" stroke="#9ca3af" rx="6"/>
+  <rect x="350" y="480" width="120" height="38" fill="#f9fafb" stroke="#9ca3af" rx="6"/>
+  <rect x="480" y="480" width="320" height="38" fill="#f9fafb" stroke="#9ca3af" rx="6"/>
+  <rect x="810" y="480" width="130" height="38" fill="#16a34a" rx="6"/>
+  <text x="875" y="505" fill="#fff" font-size="16" text-anchor="middle">Submit</text>
+</svg>
