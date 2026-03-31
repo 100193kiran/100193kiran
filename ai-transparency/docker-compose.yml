@@ -42,12 +42,14 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ai_transparency
       PORT: 4000
+      AUTH_TOKEN: dev-token
     depends_on: [postgres, redis]
     ports: ["4000:4000"]
   benchmarks:
     build: ./services/benchmarks
     environment:
       KAFKA_BROKER: kafka:9092
+      AUTH_TOKEN: dev-token
     depends_on: [kafka]
     ports: ["5000:5000"]
   ingest-worker:
@@ -55,6 +57,7 @@ services:
     environment:
       KAFKA_BROKER: kafka:9092
       PROFILES_URL: http://profiles:4000
+      AUTH_TOKEN: dev-token
     depends_on: [kafka, profiles]
   reviews:
     build: ./services/reviews
@@ -64,6 +67,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ai_transparency
       PROFILES_URL: http://profiles:4000
+      AUTH_TOKEN: dev-token
       PORT: 4100
     depends_on: [postgres, profiles]
     ports: ["4100:4100"]
