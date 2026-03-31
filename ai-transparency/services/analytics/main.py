@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
-import os
 from pathlib import Path
+from train import train_model
 
 app = FastAPI()
 model = None
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / 'models' / 'hallucination_model.pkl'
 
 class Features(BaseModel):
     feature1: float
@@ -14,10 +16,9 @@ class Features(BaseModel):
 @app.on_event('startup')
 def startup():
     global model
-    model_path = Path('models/hallucination_model.pkl')
-    if not model_path.exists():
-        from train import model as _  # noqa
-    model = joblib.load(model_path)
+    if not MODEL_PATH.exists():
+        train_model()
+    model = joblib.load(MODEL_PATH)
 
 @app.get('/health')
 def health():

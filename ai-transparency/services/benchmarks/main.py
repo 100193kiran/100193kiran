@@ -1,11 +1,19 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from kafka import KafkaProducer
+from kafka.errors import NoBrokersAvailable
 import json
 import os
 
 app = FastAPI()
-producer = None
+class NoopProducer:
+    def send(self, *_args, **_kwargs):
+        return None
+
+    def flush(self):
+        return None
+
+producer = NoopProducer()
 
 class IngestPayload(BaseModel):
     model_id: str
@@ -16,10 +24,13 @@ class IngestPayload(BaseModel):
 @app.on_event("startup")
 def startup() -> None:
     global producer
-    producer = KafkaProducer(
-        bootstrap_servers=os.getenv("KAFKA_BROKER", "kafka:9092"),
-        value_serializer=lambda v: json.dumps(v).encode("utf-8")
-    )
+    try:
+        producer = KafkaProducer(
+            bootstrap_servers=os.getenv("KAFKA_BROKER", "kafka:9092"),
+            value_serializer=lambda v: json.dumps(v).encode("utf-8")
+        )
+    except NoBrokersAvailable:
+        producer = NoopProducer()
 
 @app.get('/health')
 def health():

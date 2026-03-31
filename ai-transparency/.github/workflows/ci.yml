@@ -28,4 +28,4 @@ jobs:
       - name: Analytics tests
         run: |
           pip install -r services/analytics/requirements.txt
-          pytest services/analytics/test_main.py
+          pytest services/analytics/test_analytics_main.py
