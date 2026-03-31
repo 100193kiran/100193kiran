@@ -219,3 +219,38 @@ Workflow transitions:
 `draft -> submitted -> approved|rejected`, and `rejected -> draft`.
 
 This introduces governance guardrails similar to enterprise model onboarding workflows.
+
+
+---
+
+## 8) API gateway, schema registry, and enterprise testing additions
+
+### API gateway
+
+- New `apps/api-gateway` service centralizes authn/authz and edge rate limiting.
+- Downstream routes:
+  - `/profiles/*`
+  - `/reviews/*`
+  - `/benchmarks/*`
+  - `/analytics/*`
+
+### Message schemas + versioning
+
+- Canonical event schema in `libs/common/schemas/benchmark-ingest.v1.json`.
+- Payloads now include `schema_version` and are validated before publish.
+- Registry conventions documented in `libs/common/registry/README.md`.
+
+### API-only ownership boundary step
+
+- Profiles now consumes reviews via HTTP (`/models/:id/reviews` + `/summary`) instead of reading reviews table directly for trust/read-path composition.
+
+### Contract + E2E test scaffolding
+
+- Contract tests: `tests/contract/test_benchmark_schema.py`.
+- E2E skeleton: `tests/e2e/playwright.config.ts` and `tests/e2e/model-flow.spec.ts`.
+
+### Compliance and immutable evidence
+
+- Added model-card endpoints and compliance evidence endpoints in profiles.
+- Added SQL migration for `model_cards` and `compliance_evidence`.
+- Audit logs now chain payload metadata with previous hash context for stronger tamper evidence.

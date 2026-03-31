@@ -74,6 +74,13 @@ services:
   analytics:
     build: ./services/analytics
     ports: ["6000:6000"]
+  api-gateway:
+    build: ./apps/api-gateway
+    environment:
+      AUTH_TOKEN: dev-token
+      PORT: 8080
+    depends_on: [profiles, reviews, benchmarks, analytics]
+    ports: ["8080:8080"]
   web-frontend:
     build: ./apps/web-frontend
     depends_on: [profiles, reviews]

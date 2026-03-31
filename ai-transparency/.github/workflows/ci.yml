@@ -29,3 +29,7 @@ jobs:
         run: |
           pip install -r services/analytics/requirements.txt
           pytest services/analytics/test_analytics_main.py
+      - name: Contract tests
+        run: |
+          pip install jsonschema
+          pytest tests/contract/test_benchmark_schema.py

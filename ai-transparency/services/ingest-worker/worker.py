@@ -20,6 +20,8 @@ AUTH_TOKEN = os.getenv('AUTH_TOKEN', 'dev-token')
 
 for msg in consumer:
     payload = msg.value
+    if payload.get('schema_version') != '1.0.0':
+      continue
     text = json.dumps(payload)
     if EMAIL_RE.search(text) or SSN_RE.search(text):
       payload.setdefault('metrics', {})['pii_flagged'] = True

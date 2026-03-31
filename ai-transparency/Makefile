@@ -27,7 +27,7 @@ smoke:
 test:
 	cd services/profiles && npm test
 	cd services/reviews && npm test
-	pytest services/benchmarks/test_main.py services/analytics/test_analytics_main.py
+	pytest services/benchmarks/test_main.py services/analytics/test_analytics_main.py tests/contract/test_benchmark_schema.py
 
 clean:
 	rm -f $(MODEL_FILE)

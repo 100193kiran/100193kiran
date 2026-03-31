@@ -1,10 +1,18 @@
 import express from 'express';
 import { Pool } from 'pg';
 import fetch from 'node-fetch';
+import crypto from 'crypto';
 
 const app = express();
 app.use(express.json());
 const AUTH_TOKEN = process.env.AUTH_TOKEN || 'dev-token';
+
+app.use((req, res, next) => {
+  const correlationId = String(req.headers['x-correlation-id'] || crypto.randomUUID());
+  res.setHeader('x-correlation-id', correlationId);
+  (req as any).correlationId = correlationId;
+  next();
+});
 
 const pool = new Pool({
   host: process.env.POSTGRES_HOST || 'localhost',
@@ -32,8 +40,16 @@ app.post('/models/:id/reviews', async (req, res, next) => {
       [req.params.id, author || 'anonymous', rating, text || '', tags || []]
     );
 
-    await fetch(`${process.env.PROFILES_URL || 'http://profiles:4000'}/models/${req.params.id}/recompute_trust`, { method: 'POST', headers: { authorization: `Bearer ${AUTH_TOKEN}`, 'x-user-role': 'auditor' } });
+    await fetch(`${process.env.PROFILES_URL || 'http://profiles:4000'}/models/${req.params.id}/recompute_trust`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${AUTH_TOKEN}`,
+        'x-user-role': 'auditor',
+        'x-correlation-id': String((req as any).correlationId)
+      }
+    });
 
+    console.log(JSON.stringify({ level: 'info', service: 'reviews', event: 'review_created', correlation_id: (req as any).correlationId, model_id: req.params.id }));
     res.status(201).json(created.rows[0]);
   } catch (err) {
     next(err);
@@ -44,6 +60,18 @@ app.get('/models/:id/reviews', async (req, res, next) => {
   try {
     const rows = await pool.query('SELECT * FROM reviews WHERE model_id=$1 ORDER BY created_at DESC', [req.params.id]);
     res.json(rows.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/models/:id/reviews/summary', async (req, res, next) => {
+  try {
+    const result = await pool.query(
+      'SELECT COALESCE(AVG(rating),3)::numeric as avg_rating, COUNT(*)::int as review_count FROM reviews WHERE model_id=$1',
+      [req.params.id]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     next(err);
   }

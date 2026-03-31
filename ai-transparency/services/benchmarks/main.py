@@ -6,6 +6,8 @@ import requests
 import json
 import os
 from typing import Any
+from jsonschema import validate
+from pathlib import Path
 
 app = FastAPI()
 
@@ -22,6 +24,7 @@ producer: KafkaProducer | NoopProducer = NoopProducer()
 INGEST_MODE = os.getenv("INGEST_MODE", "kafka").lower()
 PROFILES_URL = os.getenv("PROFILES_URL", "http://profiles:4000")
 AUTH_TOKEN = os.getenv("AUTH_TOKEN", "dev-token")
+SCHEMA = json.loads((Path(__file__).resolve().parents[2] / "libs/common/schemas/benchmark-ingest.v1.json").read_text())
 
 
 class IngestPayload(BaseModel):
@@ -70,6 +73,8 @@ def ingest(payload: IngestPayload, authorization: str | None = Header(default=No
         raise HTTPException(status_code=401, detail='unauthorized')
 
     body = payload.model_dump()
+    body["schema_version"] = "1.0.0"
+    validate(instance=body, schema=SCHEMA)
     if INGEST_MODE == "direct":
         response = requests.post(
             f"{PROFILES_URL}/models/{payload.model_id}/benchmarks",
