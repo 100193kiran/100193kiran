@@ -1,0 +1,76 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ai_transparency
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./infra/sql:/docker-entrypoint-initdb.d
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    depends_on: [zookeeper]
+    ports: ["9092:9092"]
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+    ports: ["9200:9200"]
+  profiles:
+    build: ./services/profiles
+    environment:
+      POSTGRES_HOST: postgres
+      REDIS_URL: redis://redis:6379
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ai_transparency
+      PORT: 4000
+    depends_on: [postgres, redis]
+    ports: ["4000:4000"]
+  benchmarks:
+    build: ./services/benchmarks
+    environment:
+      KAFKA_BROKER: kafka:9092
+    depends_on: [kafka]
+    ports: ["5000:5000"]
+  ingest-worker:
+    build: ./services/ingest-worker
+    environment:
+      KAFKA_BROKER: kafka:9092
+      PROFILES_URL: http://profiles:4000
+    depends_on: [kafka, profiles]
+  reviews:
+    build: ./services/reviews
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ai_transparency
+      PROFILES_URL: http://profiles:4000
+      PORT: 4100
+    depends_on: [postgres, profiles]
+    ports: ["4100:4100"]
+  analytics:
+    build: ./services/analytics
+    ports: ["6000:6000"]
+  web-frontend:
+    build: ./apps/web-frontend
+    depends_on: [profiles, reviews]
+    ports: ["3000:3000"]
