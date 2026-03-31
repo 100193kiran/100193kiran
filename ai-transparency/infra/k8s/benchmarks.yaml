@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: benchmarks
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: benchmarks }
+  template:
+    metadata:
+      labels: { app: benchmarks }
+    spec:
+      containers:
+        - name: benchmarks
+          image: your-registry/benchmarks:latest
+          ports:
+            - containerPort: 5000
+4100
+6000
+          envFrom:
+            - configMapRef: { name: ai-transparency-config }
+            - secretRef: { name: ai-transparency-secret }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: benchmarks
+spec:
+  selector: { app: benchmarks }
+  ports:
+    - port: 5000
+4100
+6000
+      targetPort: 5000
+4100
+6000
