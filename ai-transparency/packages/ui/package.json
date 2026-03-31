@@ -1,0 +1,22 @@
+{
+  "name": "@ai-transparency/ui",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test:visual": "playwright test ../../tests/visual/storybook.spec.ts"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "@storybook/addon-essentials": "^8.5.5",
+    "@storybook/addon-interactions": "^8.5.5",
+    "@storybook/react": "^8.5.5",
+    "@storybook/react-webpack5": "^8.5.5",
+    "typescript": "^5.7.2"
+  }
+}
